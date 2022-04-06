@@ -9,6 +9,7 @@ class adding:
     
 
     def call(self):
+        print()
         print('Для остановки введите слово "break"')
         print('Вводите данные, как показано в следующем примере')
         print(': slowly = медленно')
@@ -21,7 +22,7 @@ class adding:
                 break
             
             # Обработка слова
-            word = re.search(r'.+ ->', input_word)[0][:-3]
+            word = re.search(r'.+ =', input_word)[0][:-3]
             if word != '':
                 new_word['word'] = word
             else:
@@ -29,7 +30,7 @@ class adding:
                 continue
 
             # Обработка перевода
-            translate = re.search(r'-> .+', input_word)[0][3:]
+            translate = re.search(r'= .+', input_word)[0][3:]
             if translate != '':
                 new_word['translate'] = translate
             else:
@@ -64,6 +65,7 @@ class repeat:
     
 
     def call(self):
+        print()
         print('Для остановки введите слово "break"')
 
         len_collection = len(list(self.collection.find({})))
@@ -95,6 +97,7 @@ class repeat_last:
 
 
     def call(self):
+        print()
         print('Для остановки введите слово "break"')
 
         # Узнаем длину всей коллекции
