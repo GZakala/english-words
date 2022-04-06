@@ -69,6 +69,8 @@ class repeat:
         print('Для остановки введите слово "break"')
 
         len_collection = len(list(self.collection.find({})))
+        if len_collection == 0:
+            print('В этой коллекции, пока, нет слов')
 
         while True:
             # Получим случайное слово из коллекции
@@ -102,6 +104,8 @@ class repeat_last:
 
         # Узнаем длину всей коллекции
         len_collection = len(list(self.collection.find({})))
+        if len_collection == 0:
+            print('В этой коллекции, пока, нет слов')
 
         # Получим количество нужных слов
         num_words = int(input('Введите количество слов для повторения: '))
