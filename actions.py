@@ -1,7 +1,26 @@
 import re
 import random
+from secrets import choice
 from pymongo.errors import DuplicateKeyError
 
+
+def choice_output_def():
+    print()
+    print('Каким образом выводить слова?')
+    print('\t1 <-- "slowly -> медленно"')
+    print('\t2 <-- "медленно -> slowly"')
+    print('\t3 <-- "slowly -> медленно" или "медленно -> slosly"')
+    
+    while True:
+        choice = int(input('Введите число: '))
+        if choice not in (1, 2, 3):
+            print('Введите число от 1 до 3')
+            continue
+        
+        break
+    
+    return choice
+    
 
 class adding:
     def __init__(self, collection):
@@ -57,8 +76,6 @@ class adding:
                     print('Заменено')
 
 
-
-
 class repeat:
     def __init__(self, collection):
         self.collection = collection
@@ -71,30 +88,40 @@ class repeat:
             print('В этой коллекции, пока, нет слов')
             return
 
+        # Спросим, как выводить данные
+        choice_output = choice_output_def()
+
         print()
         print('Для остановки введите слово "break"')
 
         while True:
-            # Используем рандом, что бы выбрать из (перевести С английского или перевести НА английский)
-            random_translate = random.randint(1, 2)
-
             # Получим случайное слово из коллекции
             random_num_id = random.sample(range(1, len_collection), 1)[0]
             sample_word = self.collection.find_one({'num_id': random_num_id})
 
-            # Просим ввести перевод этого слова
-            if random_translate == 1:
+            if choice_output == 1:
                 input_word = input(f'{sample_word["word"]} -> ')
-            else:
+                translate = sample_word['translate']
+            elif choice_output == 2:
                 input_word = input(f'{sample_word["translate"]} -> ')
+                translate = sample_word['word']
+            else:
+                # Используем рандом, что бы выбрать из (перевести С английского или перевести НА английский)
+                random_translate = random.randint(1, 2)
+
+                # Просим ввести перевод этого слова
+                if random_translate == 1:
+                    input_word = input(f'{sample_word["word"]} -> ')
+                else:
+                    input_word = input(f'{sample_word["translate"]} -> ')
     
+                if random_translate == 1:
+                    translate = sample_word['translate']
+                else:
+                    translate = sample_word['word']
+
             if 'break' in input_word:
                 break
-
-            if random_translate == 1:
-                translate = sample_word['translate']
-            else:
-                translate = sample_word['word']
 
             # Проверяем, является ли перевод верным
             if input_word == translate:
@@ -117,6 +144,9 @@ class repeat_last:
             print('В этой коллекции, пока, нет слов')
             return
 
+        # Спросим, как выводить данные
+        choice_output = choice_output_def()
+
         print()
         print('Для остановки введите слово "break"')
 
@@ -134,26 +164,32 @@ class repeat_last:
         words = self.collection.find({'$in': {'num_id': random_num_id}})
         
         for word in words:
-            # Используем рандом, что бы выбрать из (перевести С английского или перевести НА английский)
-            random_translate = random.randint(1, 2)
-
-            # Просим ввести перевод этого слова
-            if random_translate == 1:
+            if choice_output == 1:
                 input_word = input(f'{word["word"]} -> ')
-            else:
+                translate = word['translate']
+            elif choice_output == 2:
                 input_word = input(f'{word["translate"]} -> ')
+                translate = word['word']
+            else:
+                # Используем рандом, что бы выбрать из (перевести С английского или перевести НА английский)
+                random_translate = random.randint(1, 2)
+
+                # Просим ввести перевод этого слова
+                if random_translate == 1:
+                    input_word = input(f'{word["word"]} -> ')
+                else:
+                    input_word = input(f'{word["translate"]} -> ')
     
+                if random_translate == 1:
+                    translate = word['translate']
+                else:
+                    translate = word['word']
+
             if 'break' in input_word:
                 break
-
-            if random_translate == 1:
-                translate = word['translate']
-            else:
-                translate = word['word']
 
             # Проверяем, является ли перевод верным
             if input_word == translate:
                 print('\tВерно!')
             else:
                 print(f'\tНет, верный перевод -> {translate}')
-            
