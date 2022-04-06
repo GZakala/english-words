@@ -75,17 +75,26 @@ class repeat:
         print('Для остановки введите слово "break"')
 
         while True:
+            # Используем рандом, что бы выбрать из (перевести С английского или перевести НА английский)
+            random_translate = random.randint(1, 2)
+
             # Получим случайное слово из коллекции
             random_num_id = random.sample(range(1, len_collection), 1)[0]
             sample_word = self.collection.find_one({'num_id': random_num_id})
 
             # Просим ввести перевод этого слова
-            input_word = input(f'{sample_word["word"]} -> ')
+            if random_translate == 1:
+                input_word = input(f'{sample_word["word"]} -> ')
+            else:
+                input_word = input(f'{sample_word["translate"]} -> ')
     
             if 'break' in input_word:
                 break
 
-            translate = sample_word['translate']
+            if random_translate == 1:
+                translate = sample_word['translate']
+            else:
+                translate = sample_word['word']
 
             # Проверяем, является ли перевод верным
             if input_word == translate:
@@ -125,13 +134,22 @@ class repeat_last:
         words = self.collection.find({'$in': {'num_id': random_num_id}})
         
         for word in words:
+            # Используем рандом, что бы выбрать из (перевести С английского или перевести НА английский)
+            random_translate = random.randint(1, 2)
+
             # Просим ввести перевод этого слова
-            input_word = print(f'{word["word"]} -> ')
+            if random_translate == 1:
+                input_word = input(f'{word["word"]} -> ')
+            else:
+                input_word = input(f'{word["translate"]} -> ')
     
             if 'break' in input_word:
                 break
 
-            translate = word['translate']
+            if random_translate == 1:
+                translate = word['translate']
+            else:
+                translate = word['word']
 
             # Проверяем, является ли перевод верным
             if input_word == translate:
